@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>inheritance</title>
+</head>
+<body>
+<script>
+    // p元素的继承链
+    // Object->Function->EventTarget->Node->Element->
+    // HTMLElement->HTMLParagraphElement->ThisIsAParagraphElement
+    console.log(Object.getOwnPropertyNames(document.createElement('p').__proto__));
+    console.log(Object.getOwnPropertyNames(document.createElement('p').__proto__.__proto__));
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOMReady</title>
+</head>
+<body>
+<!--
+domReady: html文档被浏览器解析（渲染引擎）后才转换成DOM节点，渲染完毕称为domReady
+
+浏览器解析HTML文件的过程
+解析HTML，生成DOM树 -- > 解析CSS，生成style rules -- >
+合并DOM和style rules，生成渲染树 -- > 结合渲染树和布局结构绘制页面
+
+window.onload()或body.onload(): 在DOM树渲染完毕及所有外部资源加载完毕后再执行函数，耗时比较长
+
+DOMContentLoaded: 在DOM树构建完毕即触发（低版本的IE不支持）
+调用： document.addEventListener('DOMContentLoaded',function () {})
+IE: document.documentElement.doScroll('left')
+JQuery的$(document).ready(function () {})封装了上述解决办法，兼容了不同浏览器，在文档加载完毕后触发-->
+<script>
+    // 模拟JQuery的domReady的逻辑
+    function myReady(fn) {
+        if (document.addEventListener) {  //判断是现代浏览器还是低版本的IE
+            document.addEventListener('DOMContentLoaded',fn,false); // 冒泡阶段捕获
+        }else {
+            IEContentLoaded(fn);
+        }
+    }
+
+    // IE模拟DOMContentLoaded
+    function IEContentLoaded(fn) {
+        var d = window.document;
+        var done = false;
+
+        var init = function () {  // 对fn()进行封装，保证fn()只执行一次
+            if (!done) {
+                done = true;
+                fn();
+            }
+        };
+
+        (function () {
+            try {
+                // 如果DOM树未构建完毕，则会抛出错误
+                d.documentElement.doScroll('left');
+            }catch (e) {
+                setTimeout(arguments.callee,50);  // arguments.callee: 调用自身
+                return; // 不写return，函数会执行下一步
+            }
+            init();
+        })();
+
+        d.onreadystatechange = function () {
+            if (d.readyState === 'complete') {
+                d.onreadystatechange = null; // 清空此事件
+                init();
+            }
+        }
+    }
+</script>
+</body>
+</html>

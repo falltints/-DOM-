@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Node-Type-Judgement</title>
+</head>
+<body>
+<div id="test"></div><!--comment-->
+<!--四个方法：
+isElement, isHTML, isXML, contains-->
+<script>
+    // 判断是否为element
+    var isElement = function (el) {
+        return !!el && el.nodeType === 1 // !!将任意数据类型转换成布尔类型
+    };
+    console.log(isElement(document.getElementById('test')));
+    console.log(isElement(document.getElementById('test').nextSibling));
+
+    // 判断是否是XML文档
+    var isXML = function(doc) {
+        return doc.createElement("p").nodeName !== doc.createElement("P").nodeName;
+    };
+
+    // 判断是否为HTML文档
+    var isHTML = function (doc) {
+        return doc.createElement("p").nodeName === doc.createElement("P").nodeName;
+    };
+
+    // 判断元素节点是否为HTML节点
+    var isHTMLElement = function (el) {
+        if (isElement(el)) {
+            return isHTML(el.ownerDocument);
+        }
+        return false;
+    };
+
+    // 判断节点的包含关系（兼容所有浏览器）
+    // 现代浏览器的判定方法：parentNode.contains(childNode)
+    function fixContains(a,b) {
+        try {
+            while (b = b.parentNode) {
+                if (b === a) {
+                    return true;
+                }
+            }
+            return false;
+        }catch (e) {
+            // 如果传入的节点游离在DOM结构外
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

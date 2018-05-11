@@ -1,0 +1,74 @@
+<!--文档节点（document）(9)-->
+<!DOCTYPE html><!--文档类型节点(10)-->
+<html lang="en"><!--属性节点(2)，通常作为元素节点的一部分--><!--注释节点(8)-->
+<head>
+    <meta charset="UTF-8">
+    <title>DOMNode<!--文本节点(3)--></title>
+</head>
+<body><!--元素节点(1)-->
+<div id="container">海棠未雨，梨花先雪，一半春休。</div>
+<ul id="list-node">
+    <!--空白节点-->
+</ul>
+<script>
+    // 文档片段节点(11)(占位符：当文档片段节点被插入DOM中，插入的不是文档片段节点本身，而是它的子孙节点)
+    var ulNode = document.getElementById('list-node');
+    var divNode = document.getElementById('container');
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < 10; i++){
+        var li = document.createElement('li');
+        li.innerHTML = 'List item' + i;
+        frag.appendChild(li);
+    }
+    ulNode.appendChild(frag);
+
+
+    // HTML节点的属性
+
+    // nodeType
+    if (ulNode.nodeType === 1 || ulNode.nodeType === Node.ELEMENT_NODE) {
+        // IE中没有内置Node对象
+        alert('ul is an element.');
+    }
+
+    // nodeName & nodeValue
+
+    // 元素节点
+    console.log(ulNode.nodeName + '/' + ulNode.nodeValue);
+    // 结果是UL/null
+
+    // 属性节点
+    console.log(ulNode.attributes[0].nodeName + '/' + ulNode.attributes[0].nodeValue);
+    // 结果是id/list-node
+
+    // 文本节点
+    console.log(divNode.childNodes[0].nodeName + '/' + divNode.childNodes[0].nodeValue);
+    // 结果是#text/海棠未雨，梨花先雪，一半春休
+
+    // 注释节点
+    console.log(document.body.childNodes[0].nodeName + '/' + document.body.childNodes[0].nodeValue);
+    // 结果是#comment/元素节点(1)
+
+    // 文档类型节点
+    console.log(document.doctype.nodeName + '/' + document.doctype.nodeValue);
+    // 结果是html/null
+
+    // 空白节点
+    console.log(ulNode.childNodes[0].nodeName + '/' + ulNode.childNodes[0].nodeValue);
+    // #text/
+
+    // 文档片段节点
+    console.log(frag.nodeName + '/' + frag.nodeValue);
+    // 结果是#document-fragment/null
+
+    // 文档节点
+    console.log(ulNode.ownerDocument.nodeName + '/' + ulNode.ownerDocument.nodeValue);
+    console.log(document.nodeName + '/' + document.nodeValue);
+    // 结果是#document/null
+
+    // 文档节点没有父节点
+    console.log(document.parentNode);
+    // 返回null
+</script>
+</body>
+</html>
